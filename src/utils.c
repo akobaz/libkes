@@ -3,9 +3,13 @@
  * PURPOSE : utility functions for Kepler Equation Solver Library
  * AUTHOR  : Bazso Akos
  * VERSION : 1.0, 16 Feb 2019
+ *           1.1, 23 Feb 2019
  *
  * NOTE derived from corefunc.c (V1.2)
  ******************************************************************************/
+ /* include standard headers */
+#include <stdio.h>
+
 /* include module headers */
 #include "utils.h"
 #include "const.h"
@@ -201,5 +205,30 @@ inline double kes_trueanom(
         return( 2.0 * atan(sqrt((ecc + 1.0) / (ecc - 1.0)) * tanh(0.5 * x)) );
     } // end  else
 } // end kes_trueanom
+
+/******************************************************************************/
+
+/*******************************************************************************
+ *  FUNCTION    : kes_version
+ *  DESCRIPTION : print the library's version number
+ *  INPUT       : none
+ *  OUTPUT      : none
+ ******************************************************************************/
+inline void kes_version(void)
+{
+/* NOTE solution after https://stackoverflow.com/questions/240353/ */
+#define STR(x) #x
+#define TOSTR(x) STR(x)
+#define KES_VERSION_MAJOR 2019
+#define KES_VERSION_MINOR 02
+#define KES_VERSION TOSTR(KES_VERSION_MAJOR) "." TOSTR(KES_VERSION_MINOR)
+
+    static const char name[] = "Kepler Equation Solver Library";
+    printf(
+        "%s v%s\n",
+        name, KES_VERSION
+    );
+    return;
+} // end kes_version
 
 /******************************************************************************/

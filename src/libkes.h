@@ -166,6 +166,13 @@ double kes_trueanom(
 
 
 /*!
+ * @brief print the Library's version number
+ * @return none
+ */
+void kes_version(void);
+
+
+/*!
  * @brief starting value for iteration methods
  * @param[in] ecc eccentricity
  * @param[in] ma mean anomaly (in radians)

@@ -94,6 +94,13 @@ double kes_trueanom(
     const double x
 );
 
+
+/*!
+ * @brief print the Library's version number
+ * @return none
+ */
+void kes_version(void);
+
 #ifdef __cplusplus
 }
 #endif
