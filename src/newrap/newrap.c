@@ -4,6 +4,7 @@
  * AUTHOR  : Bazso Akos
  * VERSION : 1.0, 21 Aug 2012
  *           1.1, 17 Feb 2019
+ *           1.2, 22 Feb 2019
  ******************************************************************************/
 /* include standard headers */
 #include <math.h>
@@ -11,6 +12,7 @@
 /* include module headers */
 #include "newrap.h"
 #include "debug.h"
+#include "itercore.h"
 #include "kepeq.h"
 
 /******************************************************************************/
@@ -31,9 +33,9 @@ int newrap(
     kes_input_t* res
     )
 {
-    register int count = 0;        /* iteration counter */
-    double       deltax, deltaf;   /* error residuals */
-    double       x, xsave, dx, fx; /* iteration variables */
+    register int count = 0;      /* iteration counter */
+    double       deltax, deltaf; /* error residuals */
+    double       xnew, xold, fx; /* iteration variables */
 
     /* correction factor for absolute error deltaf */
     const double corr = ecc / (1.0 - ecc);
@@ -49,27 +51,24 @@ int newrap(
 #endif
 
     /* use starter for initializing iteration */
-    x = starter;
+    xnew = starter;
 
     /* main iteration loop */
     do
     {
-        xsave = x;
+        xold = xnew;
 
-        /* TODO FIXME use function for first derivative of kes_keq_ell */
-        dx = kes_keq_ell( ecc, ma, x ) / (1.0 - ecc * cos(x));
+        /* call Newton-Raphson iteration method */
+        /* TODO FIXME
+         * - use compensated summation for increment dx
+         * - check range 0 <= xnew < M_PI, reduce xnew
+         */
+        xnew = kes_itercore2( ecc, ma, xold );
 #if KES_SHOW_ITER_STATS
         ++(res->nbrSinEval); ++(res->nbrCosEval); ++(res->nbrFktEval);
 #endif
 
-        /* TODO FIXME
-         * - use compensated summation
-         * - check range 0 <= x < M_PI, reduce x
-         */
-        x -= dx;
-        //x += dx; // TODO FIXME + or -
-
-        fx = kes_keq_ell( ecc, ma, x );
+        fx = kes_keq_ell( ecc, ma, xnew );
 #if KES_SHOW_ITER_STATS
         ++(res->nbrSinEval); ++(res->nbrFktEval);
 #endif
@@ -77,7 +76,7 @@ int newrap(
         ++count;
 
         /* update error residuals */
-        deltax = fabs(x - xsave);
+        deltax = fabs(xnew - xold);
         deltaf = fabs(fx) * corr;
 
 #if KES_ITER_DEBUG
@@ -90,7 +89,7 @@ int newrap(
     ); // end do
 
     /* results */
-    res->result = x;
+    res->result = xnew;
     res->errDF  = deltaf;
     res->errDX  = deltax;
 
