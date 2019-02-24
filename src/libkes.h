@@ -132,6 +132,27 @@ extern "C" {
 #endif
 
 /*!
+ * @brief main solver function for Kepler Equation
+ * @details user can specify additional parameters via structure \a data
+ * @param[in] ecc eccentricity
+ * @param[in] ma mean anomaly (in radians)
+ * @param[in] init choose a starter method from enum #kes_stm_e
+ * @param[in] iter choose a solver method from enum #kes_sol_e
+ * @param[in,out] data pointer to structure of iteration data
+ * @param[out] status pointer to return error code from enum #kes_err_e
+ * @return solution to Kepler Equation
+ */
+double kesolver(
+    const double    ecc,
+    const double    ma,
+    const kes_stm_e init,
+    const kes_sol_e iter,
+    kes_input_t*    data,
+    kes_err_e*      status
+);
+
+
+/*!
  * @brief print error message to \a stderr
  * @param[in] type error code from enum #kes_err_e
  * @return none
@@ -163,13 +184,6 @@ double kes_trueanom(
     const double ecc,
     const double x
 );
-
-
-/*!
- * @brief print the Library's version number
- * @return none
- */
-void kes_version(void);
 
 
 /*!
@@ -260,24 +274,24 @@ kes_err_e kes_set_maxiter(
 
 
 /*!
- * @brief main solver function for Kepler Equation
- * @details user can specify additional parameters via structure \a data
- * @param[in] ecc eccentricity
- * @param[in] ma mean anomaly (in radians)
- * @param[in] init choose a starter method from enum #kes_stm_e
- * @param[in] iter choose a solver method from enum #kes_sol_e
- * @param[in,out] data pointer to structure of iteration data
- * @param[out] status pointer to return error code from enum #kes_err_e
- * @return solution to Kepler Equation
+ * @brief print the Library's version number to stdout
+ * @return none
  */
-double kesolver(
-    const double    ecc,
-    const double    ma,
-    const kes_stm_e init,
-    const kes_sol_e iter,
-    kes_input_t*    data,
-    kes_err_e*      status
-);
+void kes_show_version(void);
+
+
+/*!
+ * @brief query the current major version
+ * @return major version as integer
+ */
+int kes_get_major_version(void);
+
+
+/*!
+ * @brief query the current minor version
+ * @return minor version as integer
+ */
+int kes_get_minor_version(void);
 
 #ifdef __cplusplus
 }
