@@ -1,0 +1,27 @@
+/*! @mainpage
+\anchor mainpage
+This is the documentation for the Kepler Equation Solver Library ("libkes").
+
+The library provides functions for solving different forms of Kepler's 
+Equation, which are common when dealing with Orbital Mechanics or Celestial 
+Mechanics. Kepler's Equation relates the time to the position angle of a body 
+in its orbit. In general, it cannot be solved in closed form, i.e. there is no 
+'simple' algebraic formula that immediately provides a solution. Instead, there 
+a hundreds of different methods that solve the problem in a numerical fashion. 
+The aim of this library is to provide access to a sample of them in a simple 
+and uniform way.
+
+Here is the list of available cases for Kepler's Equation:
+ - circular case = trivial example for circular motion
+ - elliptic case = for motion on an ellipse
+ - hyperbolic case = for motion on a hyperbola
+ - parabolic case = for motion on a parabola
+
+For notes on the compilation process, see the \ref Compilation page.
+
+For notes on the usage of the library, see the \ref Usage page. A more complete 
+manual is available as \a manual.pdf.
+
+This library is released under the GNU Lesser General Public License (LGPL) 
+Version 3, see the \ref License page.
+*/

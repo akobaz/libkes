@@ -1,0 +1,16 @@
+/*! @page Usage How to use the library
+The library consists basically of two files: a header file (\a libkes.h) and a 
+library file (either \a libkes.a or \a libkes.so).
+
+For using the library in your own code, include the header \ref libkes.h in 
+your program. Place the header file into your program's directory, or in any 
+other standard include files directory.
+Additionally, when compiling your program, link to the shared or static 
+library. That's all!
+
+There are a number of small example programs in the example/ subdirectory. Each 
+program demonstrates a different aspect of the library. Have a look at them, 
+and you'll be ready to use it instantly!
+
+Back to the \ref mainpage "Main Page".
+*/

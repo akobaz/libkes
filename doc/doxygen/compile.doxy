@@ -1,0 +1,22 @@
+/*! @page Compilation Compiling the library
+Your compiler must support C99 mode compilation; if this is an issue, try using 
+another compiler.
+
+The library was developed and tested using gcc version 4.8.3 20140627 
+[gcc-4_8-branch revision 212064] (SUSE Linux).
+
+Simply run the Makefile(s). You can choose to compile either a static or a 
+shared version of the library. Currently, there are two GNU Makefiles:
+- Makefile.shared = to compile the shared library \a libkes.so
+- Makefile.static = to compile the static library \a libkes.a
+
+Each Makefile provides the two targets 'Debug' and 'Release'.
+
+Example:
+@verbatim
+% make -f Makefile.shared Release
+% make -f Makefile.static Debug
+@endverbatim
+
+Back to the \ref mainpage "Main Page".
+*/
