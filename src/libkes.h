@@ -175,6 +175,34 @@ double kes_keq_ell(
 
 
 /*!
+ * @brief evaluate hyperbolic Kepler Equation
+ * @param[in] ecc eccentricity
+ * @param[in] ma mean anomaly (in radians)
+ * @param[in] x hyperbolic eccentric anomaly (in radians)
+ * @return result of expression \f$ e \sinh x - x - M \f$
+ */
+double kes_keq_hyp(
+    const double ecc,
+    const double ma,
+    const double x
+);
+
+
+/*!
+ * @brief evaluate parabolic Kepler Equation (Barker's Equation)
+ * @param[in] ecc eccentricity (NOTE unused)
+ * @param[in] ma mean anomaly (in radians)
+ * @param[in] x true anomaly (in radians)
+ * @return result of expression \f$ s + (1/3) s^3 - M \f$ with s = tan(x/2)
+ */
+double kes_keq_par(
+    const double ecc,
+    const double ma,
+    const double x
+);
+
+
+/*!
  * @brief calculate the true anomaly for the elliptic or hyperbolic case
  * @param[in] ecc eccentricity
  * @param[in] x elliptic or hyperbolic eccentric anomaly (in radians)
@@ -239,7 +267,8 @@ int kes_get_maxiter(const kes_input_t* const in);
  * @details default value for tolf is 1E-15
  * @param[in] in pointer to structure of type #kes_input_t
  * @param[in] tol new error tolerance for |f(x(n+1))|
- * @return error code from enum #kes_err_e
+ * @return error code from enum #kes_err_e;
+ * KES_ERR_NOERR indicates success, KES_ERR_BADTOL indicates error
  */
 kes_err_e kes_set_tolf(
     kes_input_t* in,
@@ -252,7 +281,8 @@ kes_err_e kes_set_tolf(
  * @details default value for tolx is 1E-15
  * @param[in] in pointer to structure of type #kes_input_t
  * @param[in] tol new error tolerance for |x(n+1) - x(n)|
- * @return error code from enum #kes_err_e
+ * @return error code from enum #kes_err_e;
+ * KES_ERR_NOERR indicates success, KES_ERR_BADTOL indicates error
  */
 kes_err_e kes_set_tolx(
     kes_input_t* in,
@@ -265,7 +295,8 @@ kes_err_e kes_set_tolx(
  * @details default value for maxiter is 100
  * @param[in] in pointer to structure of type #kes_input_t
  * @param[in] maxiter new max. number of iterations
- * @return error code from enum #kes_err_e
+ * @return error code from enum #kes_err_e;
+ * KES_ERR_NOERR indicates success, KES_ERR_BADVAL indicates error
  */
 kes_err_e kes_set_maxiter(
     kes_input_t* in,

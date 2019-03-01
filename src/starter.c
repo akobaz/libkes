@@ -1,6 +1,6 @@
 /*******************************************************************************
  * MODULE  : starter.c
- * PURPOSE : starting value functions for Kepler Equation Solver
+ * PURPOSE : starting value functions for Kepler Equation Solver Library
  * AUTHOR  : Bazso Akos
  * VERSION : 1.0, 28 Jul 2011
  *           1.1, 21 Aug 2012
