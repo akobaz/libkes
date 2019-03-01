@@ -3,6 +3,7 @@
  * PURPOSE : main function for Kepler Equation Solver Library
  * AUTHOR  : Bazso Akos
  * VERSION : 1.0, 17 Feb 2019
+ *           1.1, 01 Mar 2019
  *
  * NOTE based on kesolver.c (v1)
  *
@@ -228,70 +229,25 @@ inline kes_err_e kes_set_maxiter(
 /******************************************************************************/
 
 /*******************************************************************************
- *  FUNCTION    : kesolver
- *  DESCRIPTION : main solver function for Kepler Equation
- *  INPUT       : - eccentricity "ecc"
- *                - mean anomaly "ma" (in radians)
- *                - starter method "init" from enum kes_stm_e
- *                - solver method "iter" from enum kes_sol_e
- *                - pointer "data" to data structure of type "kes_input_t"
- *                - pointer "status" to return error code (see error.h)
- *  OUTPUT      : solution of Kepler Equation (in radians)
+ * FUNCTION    : kes_solver_ell
+ * DESCRIPTION : specialized solver function for elliptic case
+ * INPUT       : - eccentricity "ecc"
+ *               - mean anomaly "ma" (in radians)
+ *               - starter method "init" from enum kes_stm_e
+ *               - solver method "iter" from enum kes_sol_e
+ *               - pointer "data" to data structure of type "kes_input_t"
+ *               - pointer "status" to return error code (see error.h)
+ * OUTPUT      : solution of elliptic Kepler Equation (in radians)
  ******************************************************************************/
-double kesolver(
-    const double    ecc,
-    const double    ma,
+static double kes_solver_ell(
+    const double ecc,
+    const double ma,
     const kes_stm_e init,
     const kes_sol_e iter,
     kes_input_t*    data,
     kes_err_e*      status
     )
 {
-    /* exception: input contains invalid numbers */
-    if (
-        (kes_check_val( ecc ) != KES_ERR_NOERR) ||
-        (kes_check_val( ma )  != KES_ERR_NOERR)
-    ) {
-        /* error handling */
-        *status = KES_ERR_BADVAL;
-#if KES_SOLVER_DEBUG
-    kes_show_error( *status );
-#endif
-        return( 0.0 );
-    } // end if
-
-    /* check eccentricity domain */
-    const kes_ecc_e type = kes_check_ecc(ecc, status);
-
-    /* exception: invalid eccentricity */
-    if ( type == KES_ECC_NEG )
-    {
-        /* error handling */
-        *status = KES_ERR_BADECC;
-#if KES_SOLVER_DEBUG
-    kes_show_error( *status );
-#endif
-        return( 0.0 );
-    } // end if
-
-    /* circular case: return solution immediately */
-    if ( type == KES_ECC_CIRC )
-    {
-        *status = KES_ERR_NOERR;
-        return( ma );
-    } // end if
-
-    /* TODO FIXME hyperbolic & parabolic cases not yet implemented */
-    if ( type != KES_ECC_ELL )
-    {
-        /* error handling */
-        *status = KES_ERR_BADECC;
-#if KES_SOLVER_DEBUG
-    kes_show_error( *status );
-#endif
-        return( 0.0 );
-    } // end if
-
     /* reduce mean anomaly to range -pi <= redma < pi */
     double redma = kes_reduce( ma );
 
@@ -310,17 +266,17 @@ double kesolver(
      * and return solution immediately
      */
 
-    /* check input parameters */
-    kes_check_input( data );
-
-    /* call starter function */
-    data->starter = kes_starter(ecc, redma, init, status);
+    /* call starter function
+     * TODO FIXME check that starter method really applies to elliptic case
+     */
+    data->starter = kes_starter( ecc, redma, init, status );
 
     /* exception: check starter function error code */
     if ( *status != KES_ERR_NOERR )
     {
         /* error handling */
         *status = KES_ERR_BADSTM;
+
         /* fallback in case of wrong starter method */
         data->starter = redma + ecc;
 #if KES_SOLVER_DEBUG
@@ -355,9 +311,103 @@ double kesolver(
     } // end if
 
     /* kesolver() has been successful */
-    *status = KES_ERR_NOERR;
+    *status += KES_ERR_NOERR;
 
     /* finally return result */
+    return( data->result );
+} // end kes_solver_ell
+
+/******************************************************************************/
+
+/*******************************************************************************
+ *  FUNCTION    : kesolver
+ *  DESCRIPTION : main solver function for Kepler Equation
+ *  INPUT       : - eccentricity "ecc"
+ *                - mean anomaly "ma" (in radians)
+ *                - starter method "init" from enum kes_stm_e
+ *                - solver method "iter" from enum kes_sol_e
+ *                - pointer "data" to data structure of type "kes_input_t"
+ *                - pointer "status" to return error code (see error.h)
+ *  OUTPUT      : solution of Kepler Equation (in radians)
+ ******************************************************************************/
+double kesolver(
+    const double    ecc,
+    const double    ma,
+    const kes_stm_e init,
+    const kes_sol_e iter,
+    kes_input_t*    data,
+    kes_err_e*      status
+    )
+{
+    /* reset error status */
+    *status = KES_ERR_NOERR;
+
+    /* exception: input contains invalid numbers */
+    if (
+        (kes_check_val( ecc ) != KES_ERR_NOERR) ||
+        (kes_check_val( ma )  != KES_ERR_NOERR)
+    ) {
+        /* error handling */
+        *status = KES_ERR_BADVAL;
+#if KES_SOLVER_DEBUG
+    kes_show_error( *status );
+#endif
+        return( 0.0 );
+    } // end if
+
+    /* check input parameters: {tolf, tolx, maxiter} */
+    kes_check_input( data );
+
+    /* check eccentricity domain */
+    const kes_ecc_e type = kes_check_ecc( ecc, status );
+
+    /* choose specialized solver based on eccentricity */
+    data->result = 0.0;
+    switch ( type )
+    {
+        /* exception: invalid eccentricity */
+        case KES_ECC_NEG:
+            /* error handling */
+            *status = KES_ERR_BADECC;
+#if KES_SOLVER_DEBUG
+    kes_show_error( *status );
+#endif
+            data->result = 0.0;
+            break;
+
+        /* circular case: return solution immediately */
+        case KES_ECC_CIRC:
+            *status = KES_ERR_NOERR;
+#if KES_SOLVER_DEBUG
+    kes_show_error( *status );
+#endif
+            data->result = ma;
+            break;
+
+        /* elliptic case: call iterator and return solution */
+        case KES_ECC_ELL:
+            *status = KES_ERR_NOERR;
+#if KES_SOLVER_DEBUG
+    kes_show_error( *status );
+#endif
+            data->result = kes_solver_ell(
+                ecc, ma, init, iter, data, status
+            );
+            break;
+
+        /* TODO FIXME hyperbolic & parabolic cases not yet implemented */
+        case KES_ECC_PAR:
+        case KES_ECC_HYP:
+        default:
+            *status = KES_ERR_BADECC;
+#if KES_SOLVER_DEBUG
+    kes_show_error( *status );
+#endif
+            data->result = 0.0;
+            break;
+    } // end switch
+
+    /* return final result */
     return( data->result );
 } // end kesolver
 
