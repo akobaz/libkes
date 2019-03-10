@@ -1,15 +1,33 @@
 /*******************************************************************************
- * MODULE  : kepeq.c
- * PURPOSE : evaluate Kepler Equations for different cases of eccentricity
- * AUTHOR  : Bazso Akos
- * VERSION : 1.0, 16 Feb 2019
+ * @file    kepeq.c
+ * @brief   evaluate Kepler Equations for different cases of eccentricity
+ * @author  Bazso Akos
+ * @version 1.0, 16 Feb 2019
+ *          NOTE derived from corefunc.c (V1.2)
  *
- * NOTE derived from corefunc.c (V1.2)
+ * @copyright
+ * Copyright (C) 2019 Bazso Akos
+ *
+ * This file is part of libkes.
+ *
+ * libkes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libkes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libkes.  If not, see <https://www.gnu.org/licenses/>.
+ *
  ******************************************************************************/
 /* include standard headers */
 #include <math.h>
 
-/* include module header */
+/* include module headers */
 #include "kepeq.h"
 
 /******************************************************************************/

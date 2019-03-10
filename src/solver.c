@@ -1,13 +1,31 @@
 /*******************************************************************************
- * MODULE  : solver.c
- * PURPOSE : main function for Kepler Equation Solver Library
- * AUTHOR  : Bazso Akos
- * VERSION : 1.0, 17 Feb 2019
- *           1.1, 01 Mar 2019
- *
- * NOTE based on kesolver.c (v1)
+ * @file    solver.c
+ * @brief   main function for Kepler Equation Solver Library
+ * @author  Bazso Akos
+ * @version 1.0, 17 Feb 2019
+ *          1.1, 01 Mar 2019
+ *          NOTE based on kesolver.c (V1.0)
  *
  * NOTE currently only implemented solver for elliptic case
+ *
+ * @copyright
+ * Copyright (C) 2019 Bazso Akos
+ *
+ * This file is part of libkes.
+ *
+ * libkes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libkes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libkes.  If not, see <https://www.gnu.org/licenses/>.
+ *
  ******************************************************************************/
 /* include standard headers */
 #include <stdio.h>

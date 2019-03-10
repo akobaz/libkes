@@ -1,10 +1,29 @@
 /*******************************************************************************
- * MODULE  : newrap.c
- * PURPOSE : solver method KES_SOL_NEWRAP = Newton-Raphson iteration
- * AUTHOR  : Bazso Akos
- * VERSION : 1.0, 21 Aug 2012
- *           1.1, 17 Feb 2019
- *           1.2, 22 Feb 2019
+ * @file    newrap.c
+ * @brief   solver method KES_SOL_NEWRAP = Newton-Raphson iteration
+ * @author  Bazso Akos
+ * @version 1.0, 21 Aug 2012
+ *          1.1, 17 Feb 2019
+ *          1.2, 22 Feb 2019
+ *
+ * @copyright
+ * Copyright (C) 2012-2019 Bazso Akos
+ *
+ * This file is part of libkes.
+ *
+ * libkes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libkes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libkes.  If not, see <https://www.gnu.org/licenses/>.
+ *
  ******************************************************************************/
 /* include standard headers */
 #include <math.h>

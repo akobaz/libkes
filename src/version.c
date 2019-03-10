@@ -1,8 +1,28 @@
 /*******************************************************************************
- * MODULE  : version.c
- * PURPOSE : provide version number for Kepler Equation Solver Library
- * AUTHOR  : Bazso Akos
- * VERSION : 1.0, 23 Feb 2019
+ * @file    version.c
+ * @brief   provide version number for Kepler Equation Solver Library
+ * @author  Bazso Akos
+ * @version 1.0, 23 Feb 2019
+ *          1.1, 10 Mar 2019
+ *
+ * @copyright
+ * Copyright (C) 2019 Bazso Akos
+ *
+ * This file is part of libkes.
+ *
+ * libkes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libkes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libkes.  If not, see <https://www.gnu.org/licenses/>.
+ *
  ******************************************************************************/
  /* include standard headers */
 #include <stdio.h>
@@ -38,7 +58,25 @@
 inline void kes_show_version(void)
 {
     static const char name[] = "Kepler Equation Solver Library";
-    fprintf(stdout, "%s v%s\n", name, KES_VERSION);
+    static const char info[] = "Copyright (C) 2011-2019 Bazso Akos";
+    static const char gpl3[] =
+    "This program is free software: you can redistribute it and/or modify\n"
+    "it under the terms of the GNU Lesser General Public License as published by\n"
+    "the Free Software Foundation, either version 3 of the License, or\n"
+    "(at your option) any later version.\n"
+    "\n"
+    "This program is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU Lesser General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU Lesser General Public License\n"
+    "along with this program.  If not, see <https://www.gnu.org/licenses/>.\n";
+    fprintf(
+        stdout,
+        "%s v%s\n%s\n\n%s\n",
+        name, KES_VERSION, info, gpl3
+    );
     return;
 } // end kes_show_version
 

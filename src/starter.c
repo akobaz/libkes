@@ -1,18 +1,33 @@
 /*******************************************************************************
- * MODULE  : starter.c
- * PURPOSE : starting value functions for Kepler Equation Solver Library
- * AUTHOR  : Bazso Akos
- * VERSION : 1.0, 28 Jul 2011
- *           1.1, 21 Aug 2012
- *           1.2, 30 Sep 2013
- *           1.3, 16 Feb 2019
- *
- * NOTE based on iterfunc.c (V1.2)
+ * @file    starter.c
+ * @brief   starting value functions for Kepler Equation Solver Library
+ * @author  Bazso Akos
+ * @version 1.0, 28 Jul 2011
+ *          1.1, 21 Aug 2012
+ *          1.2, 30 Sep 2013
+ *          1.3, 16 Feb 2019
+ *          NOTE based on iterfunc.c (V1.2)
  *
  * NOTE currently only implemented starters for elliptic case
  *
- * NOTE abbreviation for references:
- * OG86 = Odell & Gooding (1986), Celestial Mechanics 38, pages 307-334
+ * @copyright
+ * Copyright (C) 2011-2019 Bazso Akos
+ *
+ * This file is part of libkes.
+ *
+ * libkes is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * libkes is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with libkes.  If not, see <https://www.gnu.org/licenses/>.
+ *
  ******************************************************************************/
 /* include module headers */
 #include "starter.h"
@@ -29,6 +44,11 @@
 #endif
 
 /******************************************************************************/
+
+/***
+ * Reference: abbreviation OG86 =
+ * Odell & Gooding (1986), Celestial Mechanics 38, p.307-334
+ ***/
 
 /*******************************************************************************
  *  STARTER   : KES_STM_ES00
