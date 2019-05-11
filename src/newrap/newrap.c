@@ -4,7 +4,7 @@
  * @author  Bazso Akos
  * @version 1.0, 21 Aug 2012
  *          1.1, 17 Feb 2019
- *          1.2, 22 Feb 2019
+ *          1.2, 11 May 2019
  *
  * @copyright
  * Copyright (C) 2012-2019 Bazso Akos
@@ -38,7 +38,7 @@
 
 /*******************************************************************************
  *  FUNCTION    : newrap
- *  DESCRIPTION : Newton-Raphson iteration
+ *  DESCRIPTION : iteration function for Newton-Raphson method of order 2
  *  INPUT       : - eccentricity "ecc"
  *                - mean anomaly "ma" in radians
  *                - "starter" value for first iteration

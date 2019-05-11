@@ -65,8 +65,7 @@ inline double kes_itercore2(
     const double x0
     )
 {
-    /* ecc*cos(x), ecc*sin(x) */
-    double ecx, esx;
+    double ecx, esx; /* ecc*cos(x), ecc*sin(x) */
 
     /* calculate sin, cos */
     kes_sincos( &esx, &ecx, x0, ecc );

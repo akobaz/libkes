@@ -1,7 +1,8 @@
 /***************************************************************************//**
  * @file    newrap.h
  * @brief   Newton-Raphson method
- * @details reference(s)
+ * @details quadratic convergence; after description in:
+ * Danby & Burkardt (1983), Celestial Mechanics 31, p.95-107
  * @author  Bazso Akos
  *
  * @copyright
@@ -39,7 +40,7 @@ extern "C" {
 #endif
 
 /*!
- * @brief iteration function for Newton-Raphson method
+ * @brief iteration function for Newton-Raphson method of order 2
  * @param[in] ecc eccentricity
  * @param[in] ma mean anomaly (in radians)
  * @param[in] starter starting value for first iteration (ignored)
