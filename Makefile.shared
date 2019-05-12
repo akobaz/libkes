@@ -18,7 +18,7 @@ LIBDIR =
 LIB = 
 LDFLAGS = 
 
-INC_DEBUG = $(INC) -Isrc/ -Isrc/bisect -Isrc/fixedp -Isrc/newrap
+INC_DEBUG = $(INC) -Isrc/ -Isrc/bisect -Isrc/fixedp -Isrc/newrap -Isrc/danbur4 -Isrc/danbur5 -Isrc/halley
 CFLAGS_DEBUG = $(CFLAGS) -Winline -Wunreachable-code -Wextra -Wall -std=c99 -pg -g -fPIC
 RESINC_DEBUG = $(RESINC)
 RCFLAGS_DEBUG = $(RCFLAGS)
@@ -29,7 +29,7 @@ OBJDIR_DEBUG = obj/Debug
 DEP_DEBUG = 
 OUT_DEBUG = lib/Debug/libkes.so
 
-INC_RELEASE = $(INC) -Isrc/ -Isrc/bisect -Isrc/fixedp -Isrc/newrap
+INC_RELEASE = $(INC) -Isrc/ -Isrc/bisect -Isrc/fixedp -Isrc/newrap -Isrc/danbur4 -Isrc/danbur5 -Isrc/halley
 CFLAGS_RELEASE = $(CFLAGS) -O3 -Winline -Wunreachable-code -Wextra -Wall -std=c99 -fPIC
 RESINC_RELEASE = $(RESINC)
 RCFLAGS_RELEASE = $(RCFLAGS)
@@ -40,9 +40,9 @@ OBJDIR_RELEASE = obj/Release
 DEP_RELEASE = 
 OUT_RELEASE = lib/Release/libkes.so
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/src/kepeq.o $(OBJDIR_DEBUG)/src/utils.o $(OBJDIR_DEBUG)/src/starter.o $(OBJDIR_DEBUG)/src/solver.o $(OBJDIR_DEBUG)/src/newrap/newrap.o $(OBJDIR_DEBUG)/src/bisect/bisect.o $(OBJDIR_DEBUG)/src/itercore.o $(OBJDIR_DEBUG)/src/fixedp/fixedp.o $(OBJDIR_DEBUG)/src/error.o
+OBJ_DEBUG = $(OBJDIR_DEBUG)/src/itercore.o $(OBJDIR_DEBUG)/src/version.o $(OBJDIR_DEBUG)/src/utils.o $(OBJDIR_DEBUG)/src/starter.o $(OBJDIR_DEBUG)/src/solver.o $(OBJDIR_DEBUG)/src/newrap/newrap.o $(OBJDIR_DEBUG)/src/kepeq.o $(OBJDIR_DEBUG)/src/bisect/bisect.o $(OBJDIR_DEBUG)/src/halley/halley.o $(OBJDIR_DEBUG)/src/fixedp/fixedp.o $(OBJDIR_DEBUG)/src/error.o $(OBJDIR_DEBUG)/src/danbur5/danbur5.o $(OBJDIR_DEBUG)/src/danbur4/danbur4.o
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/src/kepeq.o $(OBJDIR_RELEASE)/src/utils.o $(OBJDIR_RELEASE)/src/starter.o $(OBJDIR_RELEASE)/src/solver.o $(OBJDIR_RELEASE)/src/newrap/newrap.o $(OBJDIR_RELEASE)/src/bisect/bisect.o $(OBJDIR_RELEASE)/src/itercore.o $(OBJDIR_RELEASE)/src/fixedp/fixedp.o $(OBJDIR_RELEASE)/src/error.o
+OBJ_RELEASE = $(OBJDIR_RELEASE)/src/itercore.o $(OBJDIR_RELEASE)/src/version.o $(OBJDIR_RELEASE)/src/utils.o $(OBJDIR_RELEASE)/src/starter.o $(OBJDIR_RELEASE)/src/solver.o $(OBJDIR_RELEASE)/src/newrap/newrap.o $(OBJDIR_RELEASE)/src/kepeq.o $(OBJDIR_RELEASE)/src/bisect/bisect.o $(OBJDIR_RELEASE)/src/halley/halley.o $(OBJDIR_RELEASE)/src/fixedp/fixedp.o $(OBJDIR_RELEASE)/src/error.o $(OBJDIR_RELEASE)/src/danbur5/danbur5.o $(OBJDIR_RELEASE)/src/danbur4/danbur4.o
 
 all: debug release
 
@@ -53,7 +53,10 @@ before_debug:
 	test -d $(OBJDIR_DEBUG)/src || mkdir -p $(OBJDIR_DEBUG)/src
 	test -d $(OBJDIR_DEBUG)/src/newrap || mkdir -p $(OBJDIR_DEBUG)/src/newrap
 	test -d $(OBJDIR_DEBUG)/src/bisect || mkdir -p $(OBJDIR_DEBUG)/src/bisect
+	test -d $(OBJDIR_DEBUG)/src/halley || mkdir -p $(OBJDIR_DEBUG)/src/halley
 	test -d $(OBJDIR_DEBUG)/src/fixedp || mkdir -p $(OBJDIR_DEBUG)/src/fixedp
+	test -d $(OBJDIR_DEBUG)/src/danbur5 || mkdir -p $(OBJDIR_DEBUG)/src/danbur5
+	test -d $(OBJDIR_DEBUG)/src/danbur4 || mkdir -p $(OBJDIR_DEBUG)/src/danbur4
 
 after_debug: 
 
@@ -62,8 +65,11 @@ debug: before_debug out_debug after_debug
 out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
 	$(LD) -shared $(LIBDIR_DEBUG) $(OBJ_DEBUG)  -o $(OUT_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
-$(OBJDIR_DEBUG)/src/kepeq.o: src/kepeq.c
-	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/kepeq.c -o $(OBJDIR_DEBUG)/src/kepeq.o
+$(OBJDIR_DEBUG)/src/itercore.o: src/itercore.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/itercore.c -o $(OBJDIR_DEBUG)/src/itercore.o
+
+$(OBJDIR_DEBUG)/src/version.o: src/version.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/version.c -o $(OBJDIR_DEBUG)/src/version.o
 
 $(OBJDIR_DEBUG)/src/utils.o: src/utils.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/utils.c -o $(OBJDIR_DEBUG)/src/utils.o
@@ -77,11 +83,14 @@ $(OBJDIR_DEBUG)/src/solver.o: src/solver.c
 $(OBJDIR_DEBUG)/src/newrap/newrap.o: src/newrap/newrap.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/newrap/newrap.c -o $(OBJDIR_DEBUG)/src/newrap/newrap.o
 
+$(OBJDIR_DEBUG)/src/kepeq.o: src/kepeq.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/kepeq.c -o $(OBJDIR_DEBUG)/src/kepeq.o
+
 $(OBJDIR_DEBUG)/src/bisect/bisect.o: src/bisect/bisect.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/bisect/bisect.c -o $(OBJDIR_DEBUG)/src/bisect/bisect.o
 
-$(OBJDIR_DEBUG)/src/itercore.o: src/itercore.c
-	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/itercore.c -o $(OBJDIR_DEBUG)/src/itercore.o
+$(OBJDIR_DEBUG)/src/halley/halley.o: src/halley/halley.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/halley/halley.c -o $(OBJDIR_DEBUG)/src/halley/halley.o
 
 $(OBJDIR_DEBUG)/src/fixedp/fixedp.o: src/fixedp/fixedp.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/fixedp/fixedp.c -o $(OBJDIR_DEBUG)/src/fixedp/fixedp.o
@@ -89,20 +98,32 @@ $(OBJDIR_DEBUG)/src/fixedp/fixedp.o: src/fixedp/fixedp.c
 $(OBJDIR_DEBUG)/src/error.o: src/error.c
 	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/error.c -o $(OBJDIR_DEBUG)/src/error.o
 
+$(OBJDIR_DEBUG)/src/danbur5/danbur5.o: src/danbur5/danbur5.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/danbur5/danbur5.c -o $(OBJDIR_DEBUG)/src/danbur5/danbur5.o
+
+$(OBJDIR_DEBUG)/src/danbur4/danbur4.o: src/danbur4/danbur4.c
+	$(CC) $(CFLAGS_DEBUG) $(INC_DEBUG) -c src/danbur4/danbur4.c -o $(OBJDIR_DEBUG)/src/danbur4/danbur4.o
+
 clean_debug: 
 	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
 	rm -rf lib/Debug
 	rm -rf $(OBJDIR_DEBUG)/src
 	rm -rf $(OBJDIR_DEBUG)/src/newrap
 	rm -rf $(OBJDIR_DEBUG)/src/bisect
+	rm -rf $(OBJDIR_DEBUG)/src/halley
 	rm -rf $(OBJDIR_DEBUG)/src/fixedp
+	rm -rf $(OBJDIR_DEBUG)/src/danbur5
+	rm -rf $(OBJDIR_DEBUG)/src/danbur4
 
 before_release: 
 	test -d lib/Release || mkdir -p lib/Release
 	test -d $(OBJDIR_RELEASE)/src || mkdir -p $(OBJDIR_RELEASE)/src
 	test -d $(OBJDIR_RELEASE)/src/newrap || mkdir -p $(OBJDIR_RELEASE)/src/newrap
 	test -d $(OBJDIR_RELEASE)/src/bisect || mkdir -p $(OBJDIR_RELEASE)/src/bisect
+	test -d $(OBJDIR_RELEASE)/src/halley || mkdir -p $(OBJDIR_RELEASE)/src/halley
 	test -d $(OBJDIR_RELEASE)/src/fixedp || mkdir -p $(OBJDIR_RELEASE)/src/fixedp
+	test -d $(OBJDIR_RELEASE)/src/danbur5 || mkdir -p $(OBJDIR_RELEASE)/src/danbur5
+	test -d $(OBJDIR_RELEASE)/src/danbur4 || mkdir -p $(OBJDIR_RELEASE)/src/danbur4
 
 after_release: 
 
@@ -111,8 +132,11 @@ release: before_release out_release after_release
 out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
 	$(LD) -shared $(LIBDIR_RELEASE) $(OBJ_RELEASE)  -o $(OUT_RELEASE) $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
-$(OBJDIR_RELEASE)/src/kepeq.o: src/kepeq.c
-	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/kepeq.c -o $(OBJDIR_RELEASE)/src/kepeq.o
+$(OBJDIR_RELEASE)/src/itercore.o: src/itercore.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/itercore.c -o $(OBJDIR_RELEASE)/src/itercore.o
+
+$(OBJDIR_RELEASE)/src/version.o: src/version.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/version.c -o $(OBJDIR_RELEASE)/src/version.o
 
 $(OBJDIR_RELEASE)/src/utils.o: src/utils.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/utils.c -o $(OBJDIR_RELEASE)/src/utils.o
@@ -126,11 +150,14 @@ $(OBJDIR_RELEASE)/src/solver.o: src/solver.c
 $(OBJDIR_RELEASE)/src/newrap/newrap.o: src/newrap/newrap.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/newrap/newrap.c -o $(OBJDIR_RELEASE)/src/newrap/newrap.o
 
+$(OBJDIR_RELEASE)/src/kepeq.o: src/kepeq.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/kepeq.c -o $(OBJDIR_RELEASE)/src/kepeq.o
+
 $(OBJDIR_RELEASE)/src/bisect/bisect.o: src/bisect/bisect.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/bisect/bisect.c -o $(OBJDIR_RELEASE)/src/bisect/bisect.o
 
-$(OBJDIR_RELEASE)/src/itercore.o: src/itercore.c
-	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/itercore.c -o $(OBJDIR_RELEASE)/src/itercore.o
+$(OBJDIR_RELEASE)/src/halley/halley.o: src/halley/halley.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/halley/halley.c -o $(OBJDIR_RELEASE)/src/halley/halley.o
 
 $(OBJDIR_RELEASE)/src/fixedp/fixedp.o: src/fixedp/fixedp.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/fixedp/fixedp.c -o $(OBJDIR_RELEASE)/src/fixedp/fixedp.o
@@ -138,13 +165,22 @@ $(OBJDIR_RELEASE)/src/fixedp/fixedp.o: src/fixedp/fixedp.c
 $(OBJDIR_RELEASE)/src/error.o: src/error.c
 	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/error.c -o $(OBJDIR_RELEASE)/src/error.o
 
+$(OBJDIR_RELEASE)/src/danbur5/danbur5.o: src/danbur5/danbur5.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/danbur5/danbur5.c -o $(OBJDIR_RELEASE)/src/danbur5/danbur5.o
+
+$(OBJDIR_RELEASE)/src/danbur4/danbur4.o: src/danbur4/danbur4.c
+	$(CC) $(CFLAGS_RELEASE) $(INC_RELEASE) -c src/danbur4/danbur4.c -o $(OBJDIR_RELEASE)/src/danbur4/danbur4.o
+
 clean_release: 
 	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
 	rm -rf lib/Release
 	rm -rf $(OBJDIR_RELEASE)/src
 	rm -rf $(OBJDIR_RELEASE)/src/newrap
 	rm -rf $(OBJDIR_RELEASE)/src/bisect
+	rm -rf $(OBJDIR_RELEASE)/src/halley
 	rm -rf $(OBJDIR_RELEASE)/src/fixedp
+	rm -rf $(OBJDIR_RELEASE)/src/danbur5
+	rm -rf $(OBJDIR_RELEASE)/src/danbur4
 
 .PHONY: before_debug after_debug clean_debug before_release after_release clean_release
 
