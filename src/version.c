@@ -44,7 +44,7 @@
 #define STR(x)            #x
 #define TOSTR(x)          STR(x)
 #define KES_VERSION_MAJOR 2019
-#define KES_VERSION_MINOR 02
+#define KES_VERSION_MINOR 05
 #define KES_VERSION       TOSTR(KES_VERSION_MAJOR) "." TOSTR(KES_VERSION_MINOR)
 
 /******************************************************************************/
