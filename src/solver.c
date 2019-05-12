@@ -4,6 +4,7 @@
  * @author  Bazso Akos
  * @version 1.0, 17 Feb 2019
  *          1.1, 01 Mar 2019
+ *          1.2, 11 May 2019
  *          NOTE based on kesolver.c (V1.0)
  *
  * NOTE currently only implemented solver for elliptic case
@@ -37,7 +38,10 @@
 
 /* include headers for solver modules */
 #include "bisect.h"
+#include "danbur4.h"
+#include "danbur5.h"
 #include "fixedp.h"
+#include "halley.h"
 #include "newrap.h"
 
 /******************************************************************************/
@@ -58,10 +62,13 @@ typedef struct
 
 /* list of iterator functions and pointers to corresponding functions */
 static const kes_iter_list_t list_of_iterators[KES_SOL_TOTAL] = {
-    {KES_SOL_NONE,    NULL,    "invalid solver method"},
-    {KES_SOL_BISECT,  &bisect, "Bisection method (interval halving)"},
-    {KES_SOL_FIXEDP,  &fixedp, "Fixed-point iteration"},
-    {KES_SOL_NEWRAP,  &newrap, "Newton-Raphson method"}
+    {KES_SOL_NONE,    NULL,     "invalid solver method"},
+    {KES_SOL_BISECT,  &bisect,  "Bisection method (interval halving)"},
+    {KES_SOL_DANBUR4, &danbur4, "Danby-Burkardt method of order 4"},
+    {KES_SOL_DANBUR5, &danbur5, "Danby-Burkardt method of order 5"},
+    {KES_SOL_FIXEDP,  &fixedp,  "Fixed-point iteration"},
+    {KES_SOL_HALLEY,  &halley,  "Halley method"},
+    {KES_SOL_NEWRAP,  &newrap,  "Newton-Raphson method"}
 };
 
 /* default error tolerance for solver functions */
