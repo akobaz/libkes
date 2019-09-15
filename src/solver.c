@@ -5,6 +5,7 @@
  * @version 1.0, 17 Feb 2019
  *          1.1, 01 Mar 2019
  *          1.2, 11 May 2019
+ *          1.3, 15 Sep 2019
  *          NOTE based on kesolver.c (V1.0)
  *
  * NOTE currently only implemented solver for elliptic case
@@ -42,7 +43,9 @@
 #include "danbur5.h"
 #include "fixedp.h"
 #include "halley.h"
+#include "lagcon.h"
 #include "newrap.h"
+#include "secant.h"
 
 /******************************************************************************/
 
@@ -68,7 +71,9 @@ static const kes_iter_list_t list_of_iterators[KES_SOL_TOTAL] = {
     {KES_SOL_DANBUR5, &danbur5, "Danby-Burkardt method of order 5"},
     {KES_SOL_FIXEDP,  &fixedp,  "Fixed-point iteration"},
     {KES_SOL_HALLEY,  &halley,  "Halley method"},
-    {KES_SOL_NEWRAP,  &newrap,  "Newton-Raphson method"}
+    {KES_SOL_LAGCON,  &lagcon,  "Laguerre-Conway method"},
+    {KES_SOL_NEWRAP,  &newrap,  "Newton-Raphson method"},
+    {KES_SOL_SECANT,  &secant,  "Secant method"}
 };
 
 /* default error tolerance for solver functions */

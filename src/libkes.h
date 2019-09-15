@@ -2,7 +2,7 @@
  * @file    libkes.h
  * @brief   main header and API definition for Kepler Equation Solver Library
  * @author  Bazso Akos
- * @version 2019.05
+ * @version 2019.09
  *
  * @copyright
  * Copyright (C) 2011-2019 Bazso Akos
@@ -112,7 +112,9 @@ typedef enum
     KES_SOL_DANBUR5,  ///< Danby-Burkardt order 5 method
     KES_SOL_FIXEDP,   ///< Fixed-point method
     KES_SOL_HALLEY,   ///< Halley method
+    KES_SOL_LAGCON,   ///< Laguerre-Conway method
     KES_SOL_NEWRAP,   ///< Newton-Raphson method
+    KES_SOL_SECANT,   ///< Secant method
 
     KES_SOL_TOTAL     ///< total number of available solver methods
 } kes_sol_e;
