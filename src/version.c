@@ -4,6 +4,8 @@
  * @author  Bazso Akos
  * @version 1.0, 23 Feb 2019
  *          1.1, 10 Mar 2019
+ *          1.2, 15 Sep 2019
+ *          update of KES_VERSION_X on 15 Sep 2019
  *
  * @copyright
  * Copyright (C) 2019 Bazso Akos
@@ -44,7 +46,7 @@
 #define STR(x)            #x
 #define TOSTR(x)          STR(x)
 #define KES_VERSION_MAJOR 2019
-#define KES_VERSION_MINOR 05
+#define KES_VERSION_MINOR 9
 #define KES_VERSION       TOSTR(KES_VERSION_MAJOR) "." TOSTR(KES_VERSION_MINOR)
 
 /******************************************************************************/
@@ -74,8 +76,9 @@ inline void kes_show_version(void)
     "along with this program.  If not, see <https://www.gnu.org/licenses/>.\n";
     fprintf(
         stdout,
-        "%s v%s\n%s\n\n%s\n",
-        name, KES_VERSION, info, gpl3
+        "%s v%4d.%02d\n%s\n\n%s\n",
+        //name, KES_VERSION, info, gpl3
+        name, KES_VERSION_MAJOR, KES_VERSION_MINOR, info, gpl3
     );
     return;
 } // end kes_show_version
