@@ -10,8 +10,8 @@ Description
 This library provides functions for solving different forms of *Kepler's
 equation* that are common when dealing with Orbital Dynamics or Celestial
 Mechanics.
-*Kepler's equation* relates the time to the position angle of a body in its
-orbit.
+*Kepler's equation* relates the (physical) time to the position angle of a body
+in its orbit.
 In general, this equation cannot be solved in closed form, i.e. there is no
 'simple' algebraic formula that immediately gives a solution.
 Instead, there are hundreds of different iterative methods that solve the
@@ -36,11 +36,15 @@ The library implements the following solver methods:
 * Bisection method (a.k.a. binary search, interval halving)
 * Danby-Burkardt methods of order 4 & 5 (improved N-R with quartic and quintic
   convergence rate)
-* Fixed-point iteration
+* Fixed-point iteration method
 * Halley's method (improved N-R with cubic convergence rate)
+* Markley's non-iterative fifth-order refinement to cubic approximation
+* Mikkola's direct method
 * Laguerre-Conway method
 * Newton-Raphson method
+* Nijenhuis method (high-order N-R with different starter regions)
 * Secant method
+* Wegstein secant iteration method
 
 
 Installation
@@ -51,7 +55,7 @@ There are two of them that let you choose to compile either a *static* or a
 *shared* version of the library.
 Your compiler must support C99 mode compilation (tested with gcc version 4.8.3).
 
-Examples:
+## Compilation examples
 
 1. This compiles the shared library (**libkes.so**) using the `Release' target.
 
@@ -71,8 +75,7 @@ To use it in your own code, simply include the header in your program:
 ``` C
     #include <libkes.h>
 
-    int main(void)
-    {
+    int main(void) {
         kes_show_version();
         return 0;
     }
@@ -85,9 +88,9 @@ Documentation
 -------------
 
 A Doxygen documentation system (www.doxygen.org) generated documentation is
-available in the doc/doxygen subdirectory of the package.
+available in the `doc/doxygen` subdirectory of the package.
 
-There are a number of small example programs in the example/ subdirectory to
+There are a number of small example programs in the `example/` subdirectory to
 get you started.
 Each program covers a different aspect of the library.
 
@@ -99,4 +102,4 @@ This library is released under the GNU Lesser General Public License (LGPL)
 Version 3.
 See the files COPYING and COPYING.LESSER for details.
 
-Created by Akos Bazso, 2011-2019. Version 2019.09
+Created by Akos Bazso, 2011-2019. Version 2019.11
