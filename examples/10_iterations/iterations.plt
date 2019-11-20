@@ -2,13 +2,14 @@
 # gnuplot script (version 4.6 or higher)
 # plot relative errors and number of iterations for libkes solver method
 # Bazso Akos
-# V1.0, 12 May 2019
+# V1.0, 12 May 2019 -- initial script
+# V1.1, 20 Nov 2019 -- modified order of columns
 # -----------------------------------------------------------------------------
 
 reset
 
 # TODO change input/output file name here
-filename="newrap"
+filename="mikkola"
 
 # -----------------------------------------------------------------------------
 
@@ -48,13 +49,13 @@ set multi layout 2,1
 # --- plot #1 ---
 set cblabel "log_{10} relative error"
 set title "(a) relative error"
-sp filename.".dat" u 1:3:(log10($5)) not
+sp filename.".dat" u 3:2:(log10($5)) not
 
 # --- plot #2 ---
 set cblabel "number of iterations"
 #set cbtics 10
 set title "(b) number of iterations"
-sp filename.".dat" u 1:3:6 not
+sp filename.".dat" u 3:2:6 not
 
 unset multi
 

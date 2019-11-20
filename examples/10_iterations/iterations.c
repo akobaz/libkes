@@ -6,6 +6,7 @@
  *           of iterations until convergence to a given tolerance is achieved
  * AUTHOR  : Bazso Akos
  * VERSION : 1.0, 12 May 2019
+ *           1.1, 20 Nov 2019
  * COMPILE : use Makefile
  ******************************************************************************/
 /* include library header file */
@@ -16,8 +17,8 @@
 
 int main(void)
 {
-    static const kes_stm_e init = KES_STM_ES04;   // starter method
-    static const kes_sol_e iter = KES_SOL_NEWRAP; // solver method
+    static const kes_stm_e init = KES_STM_ES04;     // starter method
+    static const kes_sol_e iter = KES_SOL_MIKKOLA;  // solver method
     static const double    pi   = 3.141592653589793;
     static const int       imax = 256; // resolution along x-axis = mean anomaly
     static const int       jmax =  64; // resolution along y-axis = eccentricity
@@ -29,7 +30,14 @@ int main(void)
         stdout,
         "# %s: starter = %d, solver = %d\n"
         "# resolution in (M,e) = (%d, %d)\n"
-        "# E_ref (rad), M (rad), ecc, E_out (rad), rel.err, number of iterations\n",
+        "# columns:\n"
+        "#\t(1) mean anomaly M [radians],\n"
+        "#\t(2) eccentricity ecc [none],\n"
+        "#\t(3) reference solution E_ref [radians],\n"
+        "#\t(4) output solution E_out (from kesolver) [radians],\n"
+        "#\t(5) relative error |E_ref - E_out| / E_ref [none],\n"
+        "#\t(6) number of iterations [integer]\n"
+        "# (1)    (2)      (3)      (4)      (5)           (6)\n",
         __FILE__, init, iter, imax, jmax
     );
 
@@ -57,12 +65,12 @@ int main(void)
 
             fprintf(
                 stdout,
-                "%lf %lf %lf %lf %e, %3d\n",
-                ref, ma, ecc, sol, relerr, data.iterations
+                "%lf %lf %lf %lf %e %3d\n",
+                ma, ecc, ref, sol, relerr, data.iterations
             );
         } // end for(j)
 
-        /* add empty line to start new data block */
+        /* add empty line to start new data block for gnuplot format */
         fprintf(stdout, "\n");
     } // end for(i)
 
