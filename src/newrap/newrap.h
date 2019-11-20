@@ -29,7 +29,7 @@
 #define KES_SOL_NEWRAP__H
 
 /* include module headers */
-#include "solver.h"
+#include "input.h"
 
 /******************************************************************************/
 
@@ -43,7 +43,7 @@ extern "C" {
  * @brief iteration function for Newton-Raphson method of order 2
  * @param[in] ecc eccentricity
  * @param[in] ma mean anomaly (in radians)
- * @param[in] starter starting value for first iteration (ignored)
+ * @param[in] starter starting value for first iteration
  * @param[out] res iteration results and statistics
  * @return number of iterations
  */

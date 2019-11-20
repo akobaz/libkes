@@ -2,7 +2,7 @@
  * @file    lagcon.h
  * @brief   Laguerre-Conway method
  * @details cubic convergence; after description in:
- * Conway (1986), Celestial Mechanics 29, p.199-211
+ * Conway (1986), Celestial Mechanics 39, p.199-211
  * @author  Bazso Akos
  *
  * @copyright
@@ -29,7 +29,7 @@
 #define KES_SOL_LAGCON__H
 
 /* include module headers */
-#include "solver.h"
+#include "input.h"
 
 /******************************************************************************/
 
@@ -43,7 +43,7 @@ extern "C" {
  * @brief iteration function for Laguerre-Conway method of order 3
  * @param[in] ecc eccentricity
  * @param[in] ma mean anomaly (in radians)
- * @param[in] starter starting value for first iteration (ignored)
+ * @param[in] starter starting value for first iteration
  * @param[out] res iteration results and statistics
  * @return number of iterations
  */

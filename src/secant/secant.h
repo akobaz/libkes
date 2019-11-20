@@ -28,7 +28,7 @@
 #define KES_SOL_SECANT__H
 
 /* include module headers */
-#include "solver.h"
+#include "input.h"
 
 /******************************************************************************/
 
