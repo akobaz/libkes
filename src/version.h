@@ -2,7 +2,7 @@
  * @file    version.h
  * @brief   provide version number for Kepler Equation Solver Library
  * @author  Bazso Akos
- * @version 2019.09
+ * @version 2019.11
  *
  * @copyright
  * Copyright (C) 2019 Bazso Akos

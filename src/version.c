@@ -5,7 +5,7 @@
  * @version 1.0, 23 Feb 2019
  *          1.1, 10 Mar 2019
  *          1.2, 15 Sep 2019
- *          update of KES_VERSION_X on 15 Sep 2019
+ *          update of KES_VERSION_X on 18 Nov 2019
  *
  * @copyright
  * Copyright (C) 2019 Bazso Akos
@@ -46,7 +46,7 @@
 #define STR(x)            #x
 #define TOSTR(x)          STR(x)
 #define KES_VERSION_MAJOR 2019
-#define KES_VERSION_MINOR 9
+#define KES_VERSION_MINOR 11
 #define KES_VERSION       TOSTR(KES_VERSION_MAJOR) "." TOSTR(KES_VERSION_MINOR)
 
 /******************************************************************************/
