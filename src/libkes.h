@@ -2,7 +2,7 @@
  * @file    libkes.h
  * @brief   main header and API definition for Kepler Equation Solver Library
  * @author  Bazso Akos
- * @version 2019.09
+ * @version 2019.11
  *
  * @copyright
  * Copyright (C) 2011-2019 Bazso Akos
@@ -26,6 +26,16 @@
 #pragma once
 #ifndef LIBKES__H
 #define LIBKES__H
+
+/******************************************************************************/
+
+/*** declare macro constants ***/
+
+/* default tolerance for absolute/relative error */
+#define KES_STD_TOL     1E-15
+
+/* default maximum number of iterations */
+#define KES_STD_MAXITER 100
 
 /******************************************************************************/
 
@@ -108,13 +118,17 @@ typedef enum
 
     /* different solver methods */
     KES_SOL_BISECT,   ///< Bisection method
-    KES_SOL_DANBUR4,  ///< Danby-Burkardt order 4 method
-    KES_SOL_DANBUR5,  ///< Danby-Burkardt order 5 method
+    KES_SOL_DANBUR4,  ///< Danby-Burkardt method (order 4)
+    KES_SOL_DANBUR5,  ///< Danby-Burkardt method (order 5)
     KES_SOL_FIXEDP,   ///< Fixed-point method
     KES_SOL_HALLEY,   ///< Halley method
     KES_SOL_LAGCON,   ///< Laguerre-Conway method
+    KES_SOL_MARKLEY,  ///< Markley method
+    KES_SOL_MIKKOLA,  ///< Mikkola method
     KES_SOL_NEWRAP,   ///< Newton-Raphson method
+    KES_SOL_NIJENH,   ///< Nijenhuis method
     KES_SOL_SECANT,   ///< Secant method
+    KES_SOL_WEGSEC,   ///< Wegstein's secant modification
 
     KES_SOL_TOTAL     ///< total number of available solver methods
 } kes_sol_e;
@@ -132,14 +146,14 @@ typedef struct
     int    maxiter;    ///< maximum number of iterations
 
     /* output from iteration function */
-    double result;     ///< for returning solution of Kepler Equation
+    double result;     ///< returns solution of Kepler Equation
     double starter;    ///< starting value for first iteration
     double errDF;      ///< residual error for |f(x(n+1))|
     double errDX;      ///< residual error for |x(n+1)-x(n)|
     int    iterations; ///< number of iterations performed until convergence
 
     /* additional counters for trigonometric function evaluations
-     * NOTE only internal use
+     * NOTE only for internal use
      */
     int    nbrSinEval; ///< number of evaluations of sin()
     int    nbrCosEval; ///< number of evaluations of cos()
@@ -161,7 +175,7 @@ extern "C" {
  * @param[in] ma mean anomaly (in radians)
  * @param[in] init choose a starter method from enum #kes_stm_e
  * @param[in] iter choose a solver method from enum #kes_sol_e
- * @param[in,out] data pointer to structure of iteration data
+ * @param[in,out] data pointer to data structure of type #kes_input_t
  * @param[out] status pointer to return error code from enum #kes_err_e
  * @return solution to Kepler Equation
  */
@@ -325,6 +339,27 @@ kes_err_e kes_set_maxiter(
     kes_input_t* in,
     const int    maxiter
 );
+
+
+/*!
+ * @brief dummy function that returns input data structure
+ */
+kes_input_t kes_new_input_dummy(kes_input_t in);
+
+
+/*!
+ * @brief initialize and return a new instance of the data structure
+ * @details create a new instance of data structure from variable number
+ * of input arguments, omitted arguments are replaced by default values;
+ * function prototype: kes_input_t kes_new_input(args);
+ * @return structure of type #kes_input_t
+ */
+#define kes_new_input(...) kes_new_input_dummy(                                \
+                             (kes_input_t){                                    \
+                               .tolf    = KES_STD_TOL,                         \
+                               .tolx    = KES_STD_TOL,                         \
+                               .maxiter = KES_STD_MAXITER,                     \
+                               __VA_ARGS__ } )
 
 
 /*!

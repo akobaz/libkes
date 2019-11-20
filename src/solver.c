@@ -5,7 +5,8 @@
  * @version 1.0, 17 Feb 2019
  *          1.1, 01 Mar 2019
  *          1.2, 11 May 2019
- *          1.3, 15 Sep 2019
+ *          1.3, 20 Sep 2019
+ *          1.4, 18 Nov 2019
  *          NOTE based on kesolver.c (V1.0)
  *
  * NOTE currently only implemented solver for elliptic case
@@ -44,8 +45,12 @@
 #include "fixedp.h"
 #include "halley.h"
 #include "lagcon.h"
+#include "markley.h"
+#include "mikkola.h"
 #include "newrap.h"
+#include "nijenh.h"
 #include "secant.h"
+#include "wegsec.h"
 
 /******************************************************************************/
 
@@ -72,15 +77,13 @@ static const kes_iter_list_t list_of_iterators[KES_SOL_TOTAL] = {
     {KES_SOL_FIXEDP,  &fixedp,  "Fixed-point iteration"},
     {KES_SOL_HALLEY,  &halley,  "Halley method"},
     {KES_SOL_LAGCON,  &lagcon,  "Laguerre-Conway method"},
+    {KES_SOL_MARKLEY, &markley, "Markley method"},
+    {KES_SOL_MIKKOLA, &mikkola, "Mikkola method"},
     {KES_SOL_NEWRAP,  &newrap,  "Newton-Raphson method"},
-    {KES_SOL_SECANT,  &secant,  "Secant method"}
+    {KES_SOL_NIJENH,  &nijenh,  "Nijenhuis method"},
+    {KES_SOL_SECANT,  &secant,  "Secant method"},
+    {KES_SOL_WEGSEC,  &wegsec,  "Wegstein's secant modification"}
 };
-
-/* default error tolerance for solver functions */
-static const double std_tol     = 1e-15;
-
-/* default upper limit for number of iterations */
-static const int    std_maxiter = 100;
 
 /******************************************************************************/
 
@@ -105,156 +108,6 @@ inline void kes_show_solver(const kes_sol_e type)
         } // end if
     } // end for
 } // end kes_show_solver
-
-/******************************************************************************/
-
-/*******************************************************************************
- * FUNCTION    : kes_check_input
- * DESCRIPTION : check input parameters and set default values if needed
- * INPUT       : structure of type kes_input_t as input
- * OUTPUT      : none
- ******************************************************************************/
-static inline void kes_check_input(kes_input_t* data)
-{
-    /* override useless settings */
-    if ( data->tolf < std_tol ) data->tolf    = std_tol;
-    if ( data->tolx < std_tol ) data->tolx    = std_tol;
-    if ( data->maxiter == 0 )   data->maxiter = std_maxiter;
-    return;
-} // end kes_check_input
-
-/******************************************************************************/
-
-/*******************************************************************************
- * FUNCTION    : kes_get_tolf
- * DESCRIPTION : return current value of parameter "tolf" in data structure
- * INPUT       : structure of type kes_input_t as input
- * OUTPUT      : value tolf
- ******************************************************************************/
-inline double kes_get_tolf(const kes_input_t* const in)
-{
-    if ( in != NULL )
-        return( in->tolf );
-    else
-        return 0.0;
-} // end kes_get_tolf
-
-/*******************************************************************************
- * FUNCTION    : kes_get_tolx
- * DESCRIPTION : return current value of parameter "tolx" in data structure
- * INPUT       : structure of type kes_input_t as input
- * OUTPUT      : value tolx
- ******************************************************************************/
-inline double kes_get_tolx(const kes_input_t* const in)
-{
-    if ( in != NULL )
-        return( in->tolx );
-    else
-        return 0.0;
-} // end kes_get_tolx
-
-/*******************************************************************************
- * FUNCTION    : kes_get_maxiter
- * DESCRIPTION : return current value of parameter "maxiter" in data structure
- * INPUT       : structure of type kes_input_t as input
- * OUTPUT      : value maxiter
- ******************************************************************************/
-inline int kes_get_maxiter(const kes_input_t* const in)
-{
-    if ( in != NULL )
-        return( in->maxiter );
-    else
-        return 0;
-} // end kes_get_maxiter
-
-/******************************************************************************/
-
-/*******************************************************************************
- * FUNCTION    : kes_set_tolf
- * DESCRIPTION : set new value for parameter "tolf" in data structure
- * INPUT       : - structure of type kes_input_t
- *               - value "tolf" (ignored if negative)
- * OUTPUT      : error code from kes_err_e
- ******************************************************************************/
-inline kes_err_e kes_set_tolf(
-    kes_input_t* in,
-    const double tolf
-    )
-{
-    /* default value: error */
-    kes_err_e err = KES_ERR_BADTOL;
-
-    /* check input error tolerance to be a valid number */
-    if (
-        (kes_check_val(tolf) == KES_ERR_NOERR) &&
-        (tolf > std_tol) &&
-        (tolf < 1.0)
-    ) {
-        in->tolf = tolf;
-        err = KES_ERR_NOERR;
-    } // end if
-
-    return( err );
-} // end kes_set_tolf
-
-/******************************************************************************/
-
-/*******************************************************************************
- * FUNCTION    : kes_set_tolx
- * DESCRIPTION : set new value for parameter "tolx" in data structure
- * INPUT       : - structure of type kes_input_t
- *               - value "tolx" (ignored if negative)
- * OUTPUT      : error code from kes_err_e
- ******************************************************************************/
-inline kes_err_e kes_set_tolx(
-    kes_input_t* in,
-    const double tolx
-    )
-{
-    /* default value: error */
-    kes_err_e err = KES_ERR_BADTOL;
-
-    /* check input error tolerance to be a valid number */
-    if (
-        (kes_check_val(tolx) == KES_ERR_NOERR) &&
-        (tolx > std_tol) &&
-        (tolx < 1.0)
-    ) {
-        in->tolx = tolx;
-        err = KES_ERR_NOERR;
-    } // end if
-
-    return( err );
-} // end kes_set_tolx
-
-/******************************************************************************/
-
-/*******************************************************************************
- * FUNCTION    : kes_set_maxiter
- * DESCRIPTION : set new value for parameter "maxiter" in data structure
- * INPUT       : - structure of type kes_input_t
- *               - value "maxiter"
- * OUTPUT      : error code from kes_err_e
- ******************************************************************************/
-inline kes_err_e kes_set_maxiter(
-    kes_input_t* in,
-    const int    maxiter
-    )
-{
-    /* default value: error */
-    kes_err_e err = KES_ERR_BADVAL;
-
-    /* check input value to be a suitable number
-     * TODO FIXME limit to how many times std_maxiter ???
-     */
-    if ( (maxiter > 0) && (maxiter < 10 * std_maxiter) )
-    {
-        in->maxiter = maxiter;
-        err = KES_ERR_NOERR;
-    } // end if
-
-    return( err );
-} // end kes_set_maxiter
 
 /******************************************************************************/
 
@@ -297,9 +150,17 @@ static double kes_solver_ell(
      */
 
     /* call starter function
+     * NOTE use special starter for Nijenhuis method
      * TODO FIXME check that starter method really applies to elliptic case
      */
-    data->starter = kes_starter( ecc, redma, init, status );
+    if ( iter != KES_SOL_NIJENH )
+    {
+        data->starter = kes_starter( ecc, redma, init, status );
+    } // end if
+    else
+    {
+        data->starter = kes_starter( ecc, redma, KES_STM_ES07, status );
+    } // end else
 
     /* exception: check starter function error code */
     if ( *status != KES_ERR_NOERR )
